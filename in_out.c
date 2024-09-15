@@ -69,6 +69,7 @@ void FillingText(struct Text* text, char* buffer, int real_size)
 
         begin_str = end_str;
     }
+    realloc(text->text, text->len * sizeof(struct string));
 }
 
 void WriteFileText(FILE* f, struct Text* text)

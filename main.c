@@ -11,22 +11,22 @@ int main()
     text.text = NULL;
     text.len = 0;
 
-    const char* name_file = "input.txt";
+    const char* name_file = "Onegin.txt";
+    /*printf("Enter file-input name: ");
+    scanf("%s", name_file);
+    for(int i = 0; i < 100; ++i)
+    {
+        if (name_file[i] == '\n')
+        {
+            name_file[i] = '\0';
+            break;
+        }
+    }*/
+
     FILE* f = fopen(name_file, "r");
     ReadFileText(f, &text, name_file);
 
-    /*for(int i = 0; i < text.len; ++i)
-    {
-        printf("%s  %d\n", text.text[i].str, text.text[i].len);
-    }
-    printf("\n");*/
-
-    sort(&text, 0, text.len);
-
-    /*for(int i = 0; i < text.len; ++i)
-    {
-        printf("%s  %d\n", text.text[i].str, text.text[i].len);
-    }*/
+    sort(&text, 0, text.len, compare);
 
     FILE* write = fopen("output.txt", "w");
 
