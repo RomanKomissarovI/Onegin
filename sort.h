@@ -3,6 +3,6 @@
 
 #include "structs.h"
 
-void sort(struct Text* text);
+void sort(struct Text* text, int l, int r);
 
 #endif //SORT_H

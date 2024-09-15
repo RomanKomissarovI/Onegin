@@ -6,14 +6,14 @@
 
 #include "in_out.h"
 
-void ReadFileText(FILE* f, struct Text* text) 
+void ReadFileText(FILE* f, struct Text* text, const char* name_file) 
 {
     assert(f != NULL);
     assert(text != NULL);
 
     struct stat st;
 
-    if (stat("input.txt", &st) == -1)
+    if (stat(name_file, &st) == -1)
     {
         printf("Error file name\n");
         return;
@@ -35,30 +35,40 @@ void ReadFileText(FILE* f, struct Text* text)
     text->len = size - real_size;
     text->text = (struct string*) calloc(text->len, sizeof(struct string));
 
+    FillingText(text, buffer, real_size);
+
+    free(buffer);
+}
+
+void FillingText(struct Text* text, char* buffer, int real_size)
+{
     int end_str = 0;
     int num_str = 0;
     int begin_str = 0;
     while (end_str < real_size)
     {
-        while (buffer[end_str++] != '\0')
-            ;
-        
-        if (end_str != begin_str) 
+        char is_empty = 1, ch = 0;
+        while ((ch = buffer[end_str++]) != '\0')
         {
-            text->text[num_str].len = end_str - begin_str;
+            if (ch != ' ' && ch != '\t') 
+            {
+                is_empty = 0;
+            }
+        }
+
+        if (!is_empty) 
+        {
+            text->text[num_str].len = end_str - begin_str - 1;
 
             text->text[num_str].str = (char*) calloc(text->text[num_str].len, sizeof(char));
             strcpy(text->text[num_str].str, buffer + begin_str);
-                    //text->text[num_str].str = buffer + begin_str;
             ++num_str;
-                    //printf("num_str now: %d ", num_str);
-                    //printf("len_str now: %d   ", end_str - begin_str + 1);
-                    //printf("begin: %d, end: %d\n", begin_str, end_str);
         }
+        else
+            text->len -= 1;
 
         begin_str = end_str;
     }
-
 }
 
 void WriteFileText(FILE* f, struct Text* text)
