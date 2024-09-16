@@ -31,10 +31,11 @@ void merge(struct Text* text, int l, int mid, int r, int (*compare) (struct stri
 
 void sort(struct Text* text, int l, int r, int (*compare) (struct string s1, struct string s2)) 
 {
-    assert(text != 0);
+    assert(text != NULL);
     if (r - l > 1) 
     {
         int mid = (r + l) / 2;
+        //printf("sort:  l = %d, mid = %d, r = %d\n", l, mid, r);
         sort(text, l, mid, compare);
         sort(text, mid, r, compare);
         merge(text, l, mid, r, compare);
@@ -46,6 +47,8 @@ void merge(struct Text* text, int l, int mid, int r, int (*compare) (struct stri
     int l_ptr = l;
     int r_ptr = mid;
     int arr_ptr = 0;
+
+    //printf("merge: l = %d, mid = %d, r = %d    ", l, mid, r);
 
     while ((l_ptr < mid) && (r_ptr < r))
     {
@@ -87,12 +90,12 @@ int compare(struct string s1, struct string s2)
     char* s2_ptr = s2.str;
     while (*s1_ptr != '\0')
     {
-        if (!isalnum(*s1_ptr))
+        if (*s2_ptr != '\0' && !isalnum(*s1_ptr))
         {
             ++s1_ptr;
             continue;
         }
-        if (!isalnum(*s2_ptr))
+        if (*s2_ptr != '\0' && !isalnum(*s2_ptr))
         {
             ++s2_ptr;
             continue;

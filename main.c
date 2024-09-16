@@ -1,11 +1,11 @@
 #include <stdio.h>
-#include <string.h>
 
 #include "sort.h"
 #include "in_out.h"
 #include "structs.h"
+#include "string_func.h"
 
-int main()
+int main(int argc, const char* argv[])
 {
     struct Text text;
     text.text = NULL;
@@ -24,6 +24,7 @@ int main()
     }*/
 
     FILE* f = fopen(name_file, "r");
+
     ReadFileText(f, &text, name_file);
 
     sort(&text, 0, text.len, compare);

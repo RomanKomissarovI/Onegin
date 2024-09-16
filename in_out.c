@@ -2,9 +2,11 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <stdlib.h>
-#include <string.h>
 
+#include "string_func.h"
 #include "in_out.h"
+
+
 
 void ReadFileText(FILE* f, struct Text* text, const char* name_file) 
 {
@@ -21,7 +23,7 @@ void ReadFileText(FILE* f, struct Text* text, const char* name_file)
 
     int size = st.st_size;
 
-    char* buffer = (char*) calloc(size, sizeof(char));
+    char* buffer = (char*) calloc(size + 1, sizeof(char));
     int real_size = fread(buffer, sizeof(char), size, f);
 
     for (int i = 0; i < real_size; ++i) 
@@ -58,15 +60,18 @@ void FillingText(struct Text* text, char* buffer, int real_size)
 
         if (!is_empty) 
         {
-            text->text[num_str].len = end_str - begin_str - 1;
+            text->text[num_str].len = end_str - begin_str;
+            //printf("text_len: %d, str_len: %d, end_str: %d, num_str: %d, begin_str: %d, real_size: %d\n", text->len, text->text[num_str].len, end_str, num_str, begin_str, real_size);
 
             text->text[num_str].str = (char*) calloc(text->text[num_str].len, sizeof(char));
-            strcpy(text->text[num_str].str, buffer + begin_str);
+            //printf("wmfw\n");
+            Strcpy(text->text[num_str].str, buffer + begin_str);
+            //printf("%s\n", text->text[num_str].str);
             ++num_str;
         }
-        else
+        else{
             text->len -= 1;
-
+        }
         begin_str = end_str;
     }
     realloc(text->text, text->len * sizeof(struct string));
@@ -78,5 +83,7 @@ void WriteFileText(FILE* f, struct Text* text)
     for (int i = 0; i < len; ++i)
     {
         fprintf(f, "%s\n", text->text[i].str);
+        free(text->text[i].str);
     }
+    free(text->text);
 }
