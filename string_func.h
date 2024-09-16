@@ -5,6 +5,6 @@
 
 void fGetLine(FILE* f, int max_len, char* str);
 
-void Strcpy(char* str_to, char* str_from);
+void Strcpy(char* str_to, const char* str_from);
 
 #endif // STRING_FUNC_H

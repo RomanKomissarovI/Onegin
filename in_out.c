@@ -5,11 +5,13 @@
 
 #include "string_func.h"
 #include "in_out.h"
-
-
+#include "color_print.h"
 
 void ReadFileText(FILE* f, struct Text* text, const char* name_file) 
 {
+    if (f == NULL)
+        ColorPrint(RedColor, "Error file name\n");
+
     assert(f != NULL);
     assert(text != NULL);
 
@@ -79,6 +81,12 @@ void FillingText(struct Text* text, char* buffer, int real_size)
 
 void WriteFileText(FILE* f, struct Text* text)
 {
+    if (f == NULL)
+        ColorPrint(RedColor, "Error file name\n");
+
+    assert(f != NULL);
+    assert(text != NULL);
+
     int len = text->len;
     for (int i = 0; i < len; ++i)
     {

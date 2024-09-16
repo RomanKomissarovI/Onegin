@@ -7,30 +7,46 @@
 
 int main(int argc, const char* argv[])
 {
-    struct Text text;
-    text.text = NULL;
-    text.len = 0;
+    struct Text text = {NULL, 0};
+    //text.text = NULL;
+    //text.len = 0;
 
-    const char* name_file = "Onegin.txt";
+    char input_file[256];
+    char output_file[256] = "output.txt";
+    switch (argc)
+    {
+    case 1:
+        printf("Enter file-input name: ");
+        fGetLine(stdin, 256, input_file);
+        break;
+    case 2:
+        Strcpy(input_file, argv[1]);
+        break;
+    case 3:
+        Strcpy(input_file, argv[1]);
+        Strcpy(output_file, argv[2]);
+        break;
+    default:
+        printf("Too much arguments\n");
+        break;
+    }
     /*printf("Enter file-input name: ");
-    scanf("%s", name_file);
+    scanf("%s", input_file);
     for(int i = 0; i < 100; ++i)
     {
-        if (name_file[i] == '\n')
+        if (input_file[i] == '\n')
         {
-            name_file[i] = '\0';
+            input_file[i] = '\0';
             break;
         }
     }*/
 
-    FILE* f = fopen(name_file, "r");
-
-    ReadFileText(f, &text, name_file);
+    FILE* f = fopen(input_file, "r");
+    ReadFileText(f, &text, input_file);
 
     sort(&text, 0, text.len, compare);
 
-    FILE* write = fopen("output.txt", "w");
-
+    FILE* write = fopen(output_file, "w");
     WriteFileText(write, &text);
 
     fclose(f);
