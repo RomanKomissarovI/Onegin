@@ -1,9 +1,8 @@
-#include <stdio.h>
-
 #include "sort.h"
 #include "in_out.h"
 #include "structs.h"
 #include "string_func.h"
+#include "color_print.h"
 
 int main(int argc, const char* argv[])
 {
@@ -16,7 +15,7 @@ int main(int argc, const char* argv[])
     switch (argc)
     {
     case 1:
-        printf("Enter file-input name: ");
+        ColorPrint(GreenColor, "Enter file-input name: ");
         fGetLine(stdin, 256, input_file);
         break;
     case 2:
@@ -27,7 +26,7 @@ int main(int argc, const char* argv[])
         Strcpy(output_file, argv[2]);
         break;
     default:
-        printf("Too much arguments\n");
+        ColorPrint(RedColor, "Too much arguments\n");
         break;
     }
     /*printf("Enter file-input name: ");

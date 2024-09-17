@@ -1,5 +1,4 @@
 #include <assert.h>
-#include <stdio.h>
 #include <sys/stat.h>
 #include <stdlib.h>
 
@@ -19,7 +18,7 @@ void ReadFileText(FILE* f, struct Text* text, const char* name_file)
 
     if (stat(name_file, &st) == -1)
     {
-        printf("Error file name\n");
+        ColorPrint(RedColor, "Error file name\n");
         return;
     }
 

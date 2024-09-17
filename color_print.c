@@ -1,6 +1,7 @@
-#include "color_print.h"
 #include <stdarg.h>
 #include <stdio.h>
+
+#include "color_print.h"
 
 void ColorPrint(const char color[], const char* format, ...)
 {
