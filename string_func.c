@@ -12,6 +12,7 @@ void fGetLine(FILE* f, int max_len, char* str)
     
     int i = 0;
     int c = 0;
+    
     while (i < max_len - 1 && (c = fgetc(f)) != '\n' && c != EOF)
     {
         str[i++] = (char) c;

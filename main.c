@@ -7,11 +7,10 @@
 int main(int argc, const char* argv[])
 {
     struct Text text = {NULL, 0};
-    //text.text = NULL;
-    //text.len = 0;
 
     char input_file[256];
     char output_file[256] = "output.txt";
+
     switch (argc)
     {
     case 1:
@@ -29,16 +28,6 @@ int main(int argc, const char* argv[])
         ColorPrint(RedColor, "Too much arguments\n");
         break;
     }
-    /*printf("Enter file-input name: ");
-    scanf("%s", input_file);
-    for(int i = 0; i < 100; ++i)
-    {
-        if (input_file[i] == '\n')
-        {
-            input_file[i] = '\0';
-            break;
-        }
-    }*/
 
     FILE* f = fopen(input_file, "r");
     ReadFileText(f, &text, input_file);

@@ -48,9 +48,11 @@ void FillingText(struct Text* text, char* buffer, int real_size)
     int end_str = 0;
     int num_str = 0;
     int begin_str = 0;
+
     while (end_str < real_size)
     {
         char is_empty = 1, ch = 0;
+
         while ((ch = buffer[end_str++]) != '\0')
         {
             if (ch != ' ' && ch != '\t') 
@@ -62,12 +64,20 @@ void FillingText(struct Text* text, char* buffer, int real_size)
         if (!is_empty) 
         {
             text->text[num_str].len = end_str - begin_str;
-            //printf("text_len: %d, str_len: %d, end_str: %d, num_str: %d, begin_str: %d, real_size: %d\n", text->len, text->text[num_str].len, end_str, num_str, begin_str, real_size);
-
             text->text[num_str].str = (char*) calloc(text->text[num_str].len, sizeof(char));
-            //printf("wmfw\n");
+
+            if (text->text[num_str].str == NULL) 
+            {
+                for (int i = 0; i < num_str; ++i) 
+                {
+                    free(text->text[i].str);
+                }
+
+                free(text->text);
+                ColorPrint(RedColor, "Error: failed to allocate memory\n");
+            }
+
             Strcpy(text->text[num_str].str, buffer + begin_str);
-            //printf("%s\n", text->text[num_str].str);
             ++num_str;
         }
         else{
@@ -92,5 +102,6 @@ void WriteFileText(FILE* f, struct Text* text)
         fprintf(f, "%s\n", text->text[i].str);
         free(text->text[i].str);
     }
+    
     free(text->text);
 }
