@@ -32,7 +32,7 @@ int main(int argc, const char* argv[])
     FILE* f = fopen(input_file, "r");
     ReadFileText(f, &text, input_file);
 
-    sort(&text, 0, text.len, compare);
+    sort(text.text, sizeof(text.text[0]), 0, text.len, compare);
 
     FILE* write = fopen(output_file, "w");
     WriteFileText(write, &text);
