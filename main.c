@@ -3,12 +3,13 @@
 #include "structs.h"
 #include "string_func.h"
 #include "color_print.h"
+#include "compare.h"
 
 int main(int argc, const char* argv[])
 {
     struct Text text = {NULL, 0};
 
-    char input_file[256];
+    char input_file[256] = "Onegin.txt";
     char output_file[256] = "output.txt";
 
     switch (argc)
@@ -32,7 +33,7 @@ int main(int argc, const char* argv[])
     FILE* f = fopen(input_file, "r");
     ReadFileText(f, &text, input_file);
 
-    sort(text.text, sizeof(text.text[0]), 0, text.len, compare);
+    Sort(text.text, sizeof(text.text[0]), 0, text.len, Compare);
 
     FILE* write = fopen(output_file, "w");
     WriteFileText(write, &text);

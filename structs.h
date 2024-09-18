@@ -1,7 +1,7 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
-struct string
+struct String
 {
     char* str;
     int len;
@@ -10,7 +10,7 @@ struct string
 
 struct Text
 {
-    struct string* text;
+    struct String* text;
     int len;
 };
 
