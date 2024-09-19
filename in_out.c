@@ -36,7 +36,7 @@ void ReadFileText(FILE* f, struct Text* text, const char* name_file)
     }
 
     text->len = size - real_size;
-    text->text = (struct string*) calloc(text->len, sizeof(struct string));
+    text->text = (struct String*) calloc(text->len, sizeof(struct String));
 
     FillingText(text, buffer, real_size);
 
@@ -85,7 +85,7 @@ void FillingText(struct Text* text, char* buffer, int real_size)
         }
         begin_str = end_str;
     }
-    realloc(text->text, text->len * sizeof(struct string));
+    realloc(text->text, text->len * sizeof(struct String));
 }
 
 void WriteFileText(FILE* f, struct Text* text)

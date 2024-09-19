@@ -29,3 +29,23 @@ void Strcpy(char* str_to, const char* str_from)
     while((*str_to++ = *str_from++) != '\0')
         ;
 }
+
+int Strcmp(const char* str1, const char* str2)
+{
+    while((*str1 != '\0') && (*str1 == *str2))
+    {
+        ++str1;
+        ++str2;
+    }
+    return *str1 - *str2;
+}
+
+int Find(int argc, const char* argv[], const char* str)
+{
+    for (int i = 1; i < argc - 1; ++i) {
+        if (Strcmp(argv[i], str) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}

@@ -6,93 +6,150 @@
 
 #include "sort.h"
 #include "structs.h"
-#include "compare.h"
 
-void Merge(void* text, size_t size_el, int l, int mid, int r, int (*compare) (void* s1, void* s2));
-
-void Sort(void* text, size_t size_el, int l, int r, int (*compare) (void* s1, void* s2)) 
+int Min(int a, int b)
 {
-    assert(text != NULL);
-
-    if (r - l > 1) 
-    {
-        int mid = (r + l) / 2;
-
-        Sort(text, size_el, l, mid, compare);
-        Sort(text, size_el, mid, r, compare);
-
-        Merge(text, size_el, l, mid, r, compare);
-    }
+    return (a < b) ? a : b;
 }
-void Merge(void* text, size_t size_el, int l, int mid, int r, int (*compare) (void* s1, void* s2))
-{
-    void* arr = (void*) calloc(r - l, size_el);
 
+
+/*void Qsort(void *a, size_t size_el, int l, int r, int (*comp_func)(void *a, void *b))
+{
+    if (r - l <= 1)
+    {
+        return;
+    }
+
+    void* pivot = (char *) a + ((l + r) / 2) * size_el;
     int l_ptr = l;
-    int r_ptr = mid;
-    int arr_ptr = 0;
+    int r_ptr = r - 1;
 
-    while ((l_ptr < mid) && (r_ptr < r))
+
+    //for(int i = 0; i < 10; ++i){
+    //    printf("%d ", a[i]);
+   // }
+    //printf("\n");
+    //printf("qsort_begin: l: %d, piv: %d, r: %d\n", l, pivot, r);
+
+    while (r_ptr >= l_ptr)
     {
-        char* l_string  = (char*) text + l_ptr * size_el;
-        char* r_string  = (char*) text + r_ptr * size_el;
-
-        if (compare(l_string, r_string) > 0)
-        {
-            Copy((char*) arr + size_el * arr_ptr++, r_string, size_el);
-            ++r_ptr;
-        }
-        else
-        {
-            Copy((char*) arr + size_el * arr_ptr++, l_string, size_el);
+        while (comp_func((char *) a + r_ptr * size_el, pivot) > 0)
+            --r_ptr;
+        while (comp_func((char *) a + l_ptr * size_el, pivot) < 0)
             ++l_ptr;
+        
+        if (l_ptr <= r_ptr) {
+            if (pivot == (char *) a + l_ptr * size_el){
+                pivot = (char *) a + r_ptr * size_el;
+            }
+            if (pivot == (char *) a + r_ptr * size_el){
+                pivot = (char *) a + l_ptr * size_el;
+            }
+            Swap((char *) a + l_ptr * size_el, (char *) a + r_ptr * size_el, size_el);
+            l_ptr++;
+            r_ptr--;
         }
     }
+    int g = (l_ptr - r_ptr == 1) ? l_ptr : l_ptr - 1;
+    Qsort(a, size_el, l, g, comp_func);
+    Qsort(a, size_el, g, r, comp_func);
+    
+    //for(int i = 0; i < 10; ++i){
+    //    printf("%d ", a[i]);
+    //}
+    //printf("\n");
+    //printf("qsort_end: l_ptr: %d, piv: %d, r_ptr: %d\n", l, pivot, r);
+}*/
 
-    while (l_ptr < mid)
+void Qsort(void* a, size_t size_el, int l, int r, int (*comp_func)(void *a, void *b))
+{
+    if (r - l <= 1)
     {
-        Copy((char*) arr + size_el * arr_ptr++, (char*) text + size_el * l_ptr++, size_el);
+        return;
     }
 
-    while (r_ptr < r)
-    {
-        Copy((char*) arr + size_el * arr_ptr++, (char*) text + size_el * r_ptr++, size_el);
-    }
+    void* pivot = (char*) a + ((l + r) / 2) * size_el;
+    int l_ptr = l;
+    int r_ptr = r - 1;
 
-    for (int i = l; i < r; ++i)
+    while (r_ptr >= l_ptr)
     {
-        Copy((char*) text + size_el * i, (char*) arr + size_el * (i - l), size_el);
+        while (comp_func((char*) a + r_ptr * size_el, pivot) > 0)
+            --r_ptr;
+        while (comp_func((char*) a + l_ptr * size_el, pivot) < 0)
+            ++l_ptr;
+        
+        if (l_ptr <= r_ptr)
+        {
+            if (pivot == (char*) a + l_ptr * size_el)
+            {
+                pivot = (char*) a + r_ptr * size_el;
+            }
+            else if (pivot == (char*) a + r_ptr * size_el)
+            {
+                pivot = (char*) a + l_ptr * size_el;
+            }
+            Swap((char*) a + l_ptr++ * size_el, (char*) a + r_ptr-- * size_el, sizeof(int));
+        }
     }
-
-    free(arr);
+    int g = (l_ptr - r_ptr == 1) ? l_ptr : l_ptr - 1;
+    Qsort(a, size_el, l, g, comp_func);
+    Qsort(a, size_el, g, r, comp_func);
 }
 
-void Copy(void* to, void* from, size_t size_el)
+
+
+
+
+
+
+void Swap(void* to, void* from, size_t size_el)
 {
+    /*int* a = (int*) to;
+    int* b = (int*) from;
+
+    int t = *a;
+    *a = *b;
+    *b = t;*/
     char* c_to = (char*) to;
     char* c_from = (char*) from;
 
+    //printf("begin long long, size_el: %d\n", size_el);
+
     while (size_el >= 8) 
     {
+        long long tr = *(long long*) c_to;
         *(long long*) c_to = *(long long*) c_from;
+        *(long long*) c_from = tr;
         size_el -= 8;
         c_to += 8;
         c_from += 8;
     }
 
+    //printf("end long long: begin int, size_el: %d\n", size_el);
+
     while (size_el >= 4)
     {
+        int tr = *(int*) c_to;
+        if (c_from == c_to){
+        }
         *(int*) c_to = *(int*) c_from;
+        *(int*) c_from = tr;
+
         size_el -= 4;
         c_to += 4;
         c_from += 4;
     }
+    //printf("end int: begin char, size_el: %d\n\n", size_el);
 
     while (size_el >= 1)
     {
+        char tr = *(char*) c_to;
         *(char*) c_to = *(char*) c_from;
+        *(char*) c_from = tr;
         size_el -= 1;
         c_to += 1;
         c_from += 1;
     }
+
 }
