@@ -92,7 +92,7 @@ int main(int argc, const char* argv[])
     FILE* f = fopen(input_file, "r");
     ReadFileText(f, &text, input_file);
 
-    printf("11\n");
+    printf("%d %d\n", '{', '1');
 
     Qsort(text.text, sizeof(text.text[0]), 0, text.len, Compare);
 
@@ -101,8 +101,6 @@ int main(int argc, const char* argv[])
 
     fclose(f);
     fclose(write);
-
-
 
     return 0;
 }

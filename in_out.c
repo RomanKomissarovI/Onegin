@@ -27,15 +27,20 @@ void ReadFileText(FILE* f, struct Text* text, const char* name_file)
     char* buffer = (char*) calloc(size + 1, sizeof(char));
     int real_size = fread(buffer, sizeof(char), size, f);
 
+    int num_str = 0;
+
     for (int i = 0; i < real_size; ++i) 
     {
         if (buffer[i] == '\r' || buffer[i] == '\n')
         {
             buffer[i] = '\0';
+            ++num_str;
         }
     }
 
-    text->len = size - real_size;
+    text->len = num_str;
+    //printf("%d\n", text->len);
+    //printf("%d\n", 1/0); 
     text->text = (struct String*) calloc(text->len, sizeof(struct String));
 
     FillingText(text, buffer, real_size);
