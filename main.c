@@ -15,16 +15,16 @@ int main(int argc, const char* argv[])
     char input_file[256] = "Onegin.txt";
     char output_file[256] = "output.txt";
 
-    /*char a[] = {'a',  'B', 'C', '.', '/', '.', ' ', ' ', '?', '.', 'e', '\0'};
-    char b[] = {'a', '.', ' ', 'B', 'c', 'd', '\0'};
+    /*char a[] = {'d', 'u', 's', 't', '\0'};
+    char b[] = {'h', 'e', 'a', 'd', '\0'};
 
-    struct String s1 = {a, 5};
-    struct String s2 = {b, 2};
+    struct String s1 = {a, sizeof(a)};
+    struct String s2 = {b, sizeof(b)};
     printf("%d\n", '.');
     printf("%s %d %s %d\n", s1.str, s1.len, s2.str, s2.len);
-    printf("%d", Compare(&s1, &s2));
+    printf("%d", CompareVerse(&s1, &s2));
 
-    return 0;
+    return 0;*/
 
     /*int size = 0;
     scanf("%d", &size);
@@ -48,26 +48,6 @@ int main(int argc, const char* argv[])
     //return 0;
 
 
-
-
-    
-    /*switch (argc)
-    {
-    case 1:
-        ColorPrint(GreenColor, "Enter file-input name: ");
-        fGetLine(stdin, 256, input_file);
-        break;
-    case 2:
-        Strcpy(input_file, argv[1]);
-        break;
-    case 3:
-        Strcpy(input_file, argv[1]);
-        Strcpy(output_file, argv[2]);
-        break;
-    default:
-        ColorPrint(RedColor, "Too much arguments\n");
-        break;
-    }*/
    
 
 
@@ -92,9 +72,7 @@ int main(int argc, const char* argv[])
     FILE* f = fopen(input_file, "r");
     ReadFileText(f, &text, input_file);
 
-    printf("%d %d\n", '{', '1');
-
-    Qsort(text.text, sizeof(text.text[0]), 0, text.len, Compare);
+    Qsort(text.text, sizeof(text.text[0]), 0, text.len, CompareReverse);
 
     FILE* write = fopen(output_file, "w");
     WriteFileText(write, &text);

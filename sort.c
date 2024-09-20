@@ -7,6 +7,14 @@
 #include "sort.h"
 #include "structs.h"
 
+#define DEBUG
+
+#ifdef DEBUG
+    #define DEBUG_PRINF(...) printf(__VA_ARGS__)
+#else
+    #define DEBUG_PRINF(...)
+#endif
+
 int Min(int a, int b)
 {
     return (a < b) ? a : b;
@@ -105,16 +113,8 @@ void Qsort(void* a, size_t size_el, int l, int r, int (*comp_func)(void *a, void
 
 void Swap(void* to, void* from, size_t size_el)
 {
-    /*int* a = (int*) to;
-    int* b = (int*) from;
-
-    int t = *a;
-    *a = *b;
-    *b = t;*/
     char* c_to = (char*) to;
     char* c_from = (char*) from;
-
-    //printf("begin long long, size_el: %d\n", size_el);
 
     while (size_el >= 8) 
     {
@@ -125,8 +125,6 @@ void Swap(void* to, void* from, size_t size_el)
         c_to += 8;
         c_from += 8;
     }
-
-    //printf("end long long: begin int, size_el: %d\n", size_el);
 
     while (size_el >= 4)
     {
@@ -140,8 +138,7 @@ void Swap(void* to, void* from, size_t size_el)
         c_to += 4;
         c_from += 4;
     }
-    //printf("end int: begin char, size_el: %d\n\n", size_el);
-
+    
     while (size_el >= 1)
     {
         char tr = *(char*) c_to;

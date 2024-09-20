@@ -4,7 +4,7 @@
 #include "structs.h"
 #include <stdio.h>
 
-void FillingText(struct Text* text, char* buffer, int real_size);
+void FillText(struct Text* text, char* buffer, int real_size);
 
 void ReadFileText(FILE* f, struct Text* text, const char* name_file);
 

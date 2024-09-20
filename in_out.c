@@ -39,16 +39,14 @@ void ReadFileText(FILE* f, struct Text* text, const char* name_file)
     }
 
     text->len = num_str;
-    //printf("%d\n", text->len);
-    //printf("%d\n", 1/0); 
     text->text = (struct String*) calloc(text->len, sizeof(struct String));
 
-    FillingText(text, buffer, real_size);
+    FillText(text, buffer, real_size);
 
     free(buffer);
 }
 
-void FillingText(struct Text* text, char* buffer, int real_size)
+void FillText(struct Text* text, char* buffer, int real_size)
 {
     int end_str = 0;
     int num_str = 0;
@@ -83,11 +81,13 @@ void FillingText(struct Text* text, char* buffer, int real_size)
             }
 
             Strcpy(text->text[num_str].str, buffer + begin_str);
+
             ++num_str;
         }
         else{
             text->len -= 1;
         }
+
         begin_str = end_str;
     }
     realloc(text->text, text->len * sizeof(struct String));
