@@ -9,7 +9,7 @@ static const int ASCII_A = 97;
 static const int ASCII_Z = 122;
 
 
-int CompareStr(void* s1, void* s2)
+long long CompareStr(void* s1, void* s2)
 {
     assert(s1 != NULL);
     assert(s2 != NULL);
@@ -51,7 +51,7 @@ int CompareStr(void* s1, void* s2)
     return ToUpper(*s1_ptr) - ToUpper(*s2_ptr);
 }
 
-int CompareStrReverse(void* s1, void* s2)
+long long CompareStrReverse(void* s1, void* s2)
 {
     assert(s1 != NULL);
     assert(s2 != NULL);
@@ -98,7 +98,12 @@ int CompareStrReverse(void* s1, void* s2)
     }
 }
 
-int ToUpper(int c)
+long long ComparePtr(void* ptr1, void* ptr2)
+{
+    return (long long) ptr1 - (long long) ptr2;
+}
+
+long long ToUpper(int c)
 {              
     return ((!(ASCII_A <= c && c <= ASCII_Z)) ? c : c - 32) * (isalnum(c) ? 1 : 0); // 0, если не буква или цифра, Upper иначе
 }

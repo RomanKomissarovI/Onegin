@@ -1,10 +1,12 @@
 #ifndef COMPARE_H
 #define COMPARE_H
 
-int CompareStr(void* s1, void* s2);
+long long CompareStr(void* s1, void* s2);
 
-int CompareStrReverse(void* s1, void* s2);
+long long CompareStrReverse(void* s1, void* s2);
 
-int ToUpper(int c);
+long long ComparePtr(void* ptr1, void* ptr2);
+
+long long ToUpper(int c);
 
 #endif // COMPARE_H

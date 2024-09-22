@@ -14,7 +14,7 @@ int main(int argc, const char* argv[])
     const char* input_file = "Onegin.txt";
     const char* output_file = "output.txt";
    
-    typedef int (*cmp)(void *a, void *b);
+    typedef long long (*cmp)(void *a, void *b);
     cmp com = CompareStr;
 
     if (argc > 1){
@@ -38,6 +38,11 @@ int main(int argc, const char* argv[])
                 com = CompareStrReverse;
             }
         }
+
+        if ((ind = Find(argc, argv, "-a")) > 0) {
+            WriteFileAll(input_file, output_file, &text);
+            return 0;
+        }
     }
     else 
     {
@@ -49,12 +54,13 @@ int main(int argc, const char* argv[])
     }
 
     FILE* f = fopen(input_file, "r");
-    ReadFileText(f, &text, input_file);
+    ReadFileText(f, input_file, &text);
 
     Qsort(text.text, sizeof(text.text[0]), 0, text.len, com);
 
     FILE* write = fopen(output_file, "w");
     WriteFileText(write, &text);
+    FreeText(&text);
 
     fclose(f);
     fclose(write);

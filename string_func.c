@@ -42,7 +42,7 @@ int Strcmp(const char* str1, const char* str2)
 
 int Find(int argc, const char* argv[], const char* str)
 {
-    for (int i = 1; i < argc - 1; ++i) {
+    for (int i = 1; i < argc; ++i) {
         if (Strcmp(argv[i], str) == 0) {
             return i;
         }

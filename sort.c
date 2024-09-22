@@ -7,7 +7,7 @@
 #include "sort.h"
 #include "structs.h"
 
-void Qsort(void* a, size_t size_el, int l, int r, int (*comp_func)(void *a, void *b))
+void Qsort(void* a, size_t size_el, int l, int r, long long (*comp_func)(void *a, void *b))
 {
     if (r - l <= 1)
     {
