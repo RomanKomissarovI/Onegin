@@ -5,7 +5,11 @@
 #include "structs.h"
 #include "compare.h"
 
-int Compare(void* s1, void* s2)
+static const int ASCII_A = 97;
+static const int ASCII_Z = 122;
+
+
+int CompareStr(void* s1, void* s2)
 {
     assert(s1 != NULL);
     assert(s2 != NULL);
@@ -47,7 +51,7 @@ int Compare(void* s1, void* s2)
     return ToUpper(*s1_ptr) - ToUpper(*s2_ptr);
 }
 
-int CompareReverse(void* s1, void* s2)
+int CompareStrReverse(void* s1, void* s2)
 {
     assert(s1 != NULL);
     assert(s2 != NULL);
@@ -92,16 +96,9 @@ int CompareReverse(void* s1, void* s2)
         --s1_ptr;
         --s2_ptr;
     }
-    //printf("\n%d assert: %s: %d, \n%s: %d\n%d\n\n", s2_ptr < s2_stop, s1_real->str, *s1_ptr, s2_real->str, *s2_ptr, ToUpper(*s1_ptr) - ToUpper(*s2_ptr));
-    assert(0 != 0);
-}
-
-int CompareInt(int *a, int *b)
-{
-    return *a - *b;
 }
 
 int ToUpper(int c)
 {              
-    return ((!(97 <= c && c <= 122)) ? c : c - 32) * (isalnum(c) ? 1 : 0);
+    return ((!(ASCII_A <= c && c <= ASCII_Z)) ? c : c - 32) * (isalnum(c) ? 1 : 0); // 0, если не буква или цифра, Upper иначе
 }

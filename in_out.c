@@ -6,6 +6,20 @@
 #include "in_out.h"
 #include "color_print.h"
 
+static int ProcessStr(char* buffer, int real_size)
+{
+    int num_str = 0;
+    for (int i = 0; i < real_size; ++i) 
+    {
+        if (buffer[i] == '\r' || buffer[i] == '\n')
+        {
+            buffer[i] = '\0';
+            ++num_str;
+        }
+    }
+    return num_str;
+}
+
 void ReadFileText(FILE* f, struct Text* text, const char* name_file) 
 {
     if (f == NULL)
@@ -29,14 +43,7 @@ void ReadFileText(FILE* f, struct Text* text, const char* name_file)
 
     int num_str = 0;
 
-    for (int i = 0; i < real_size; ++i) 
-    {
-        if (buffer[i] == '\r' || buffer[i] == '\n')
-        {
-            buffer[i] = '\0';
-            ++num_str;
-        }
-    }
+    num_str = ProcessStr(buffer, real_size);
 
     text->len = num_str;
     text->text = (struct String*) calloc(text->len, sizeof(struct String));
@@ -44,6 +51,17 @@ void ReadFileText(FILE* f, struct Text* text, const char* name_file)
     FillText(text, buffer, real_size);
 
     free(buffer);
+}
+
+static void FreeErr(struct Text* text, int num_str)
+{
+    for (int i = 0; i < num_str; ++i) 
+    {
+        free(text->text[i].str);
+    }
+
+    free(text->text);
+    ColorPrint(RedColor, "Error: failed to allocate memory\n");
 }
 
 void FillText(struct Text* text, char* buffer, int real_size)
@@ -71,20 +89,15 @@ void FillText(struct Text* text, char* buffer, int real_size)
 
             if (text->text[num_str].str == NULL) 
             {
-                for (int i = 0; i < num_str; ++i) 
-                {
-                    free(text->text[i].str);
-                }
-
-                free(text->text);
-                ColorPrint(RedColor, "Error: failed to allocate memory\n");
+                FreeErr(text, num_str);
             }
 
             Strcpy(text->text[num_str].str, buffer + begin_str);
 
             ++num_str;
         }
-        else{
+        else
+        {
             text->len -= 1;
         }
 
