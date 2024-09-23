@@ -9,7 +9,7 @@
 
 int main(int argc, const char* argv[])
 {
-    struct Text text = {NULL, 0};
+    struct Text text = {NULL, NULL, 0};
 
     const char* input_file = "Onegin.txt";
     const char* output_file = "output.txt";
@@ -29,7 +29,7 @@ int main(int argc, const char* argv[])
         }
 
         if ((ind = Find(argc, argv, "-c")) > 0) {
-            if (Strcmp(argv[ind + 1], "c") == 0)
+            if (Strcmp(argv[ind + 1], "cs") == 0)
             {
                 com = CompareStr;
             }
@@ -56,12 +56,12 @@ int main(int argc, const char* argv[])
     FILE* f = fopen(input_file, "r");
     ReadFileText(f, input_file, &text);
 
-    Qsort(text.text, sizeof(text.text[0]), 0, text.len, com);
+    Qsort(text.text_ptr, sizeof(text.text_ptr[0]), 0, text.len, com);
 
     FILE* write = fopen(output_file, "w");
     WriteFileText(write, &text);
-    FreeText(&text);
 
+    FreeText(&text);
     fclose(f);
     fclose(write);
 

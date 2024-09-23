@@ -10,6 +10,7 @@ struct String
 
 struct Text
 {
+    struct String** text_ptr;
     struct String* text;
     int len;
 };

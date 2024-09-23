@@ -80,5 +80,4 @@ void Swap(void* to, void* from, size_t size_el)
         c_to += 1;
         c_from += 1;
     }
-
 }

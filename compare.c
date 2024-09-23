@@ -14,8 +14,8 @@ long long CompareStr(void* s1, void* s2)
     assert(s1 != NULL);
     assert(s2 != NULL);
 
-    struct String* s1_real = (struct String*) s1;
-    struct String* s2_real = (struct String*) s2;
+    struct String* s1_real = *(struct String**) s1;
+    struct String* s2_real = *(struct String**) s2;
 
     char* s1_ptr = s1_real->str;
     char* s2_ptr = s2_real->str;
@@ -56,8 +56,8 @@ long long CompareStrReverse(void* s1, void* s2)
     assert(s1 != NULL);
     assert(s2 != NULL);
 
-    struct String* s1_real = (struct String*) s1;
-    struct String* s2_real = (struct String*) s2;
+    struct String* s1_real = *(struct String**) s1;
+    struct String* s2_real = *(struct String**) s2;
 
     char* s1_stop = s1_real->str;
     char* s2_stop = s2_real->str;
@@ -100,7 +100,7 @@ long long CompareStrReverse(void* s1, void* s2)
 
 long long ComparePtr(void* ptr1, void* ptr2)
 {
-    return (long long) ptr1 - (long long) ptr2;
+    return (*(struct String**) ptr1) - (*(struct String**)ptr2);
 }
 
 long long ToUpper(int c)

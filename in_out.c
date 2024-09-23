@@ -49,6 +49,7 @@ void ReadFileText(FILE* f, const char* name_file, struct Text* text)
     num_str = ProcessStr(buffer, real_size);
 
     text->len = num_str;
+    text->text_ptr = (struct String**) calloc(text->len, sizeof(struct String*));
     text->text = (struct String*) calloc(text->len, sizeof(struct String));
 
     FillText(text, buffer, real_size);
@@ -64,6 +65,7 @@ static void FreeErrText(struct Text* text, int num_str)
     }
 
     free(text->text);
+    free(text->text_ptr);
     ColorPrint(RedColor, "Error: failed to allocate memory\n");
 }
 
@@ -76,6 +78,7 @@ void FreeText(struct Text* text)
     }
 
     free(text->text);
+    free(text->text_ptr);
 }
 
 void FillText(struct Text* text, char* buffer, int real_size)
@@ -88,7 +91,7 @@ void FillText(struct Text* text, char* buffer, int real_size)
     {
         char is_empty = 1, ch = 0;
 
-        while ((ch = buffer[end_str++]) != '\0')
+        while ((ch = buffer[end_str++]) != '\0') // chech empty string (of 'spaces' and 'tabs')
         {
             if (ch != ' ' && ch != '\t') 
             {
@@ -100,6 +103,7 @@ void FillText(struct Text* text, char* buffer, int real_size)
         {
             text->text[num_str].len = end_str - begin_str;
             text->text[num_str].str = (char*) calloc(text->text[num_str].len, sizeof(char));
+            text->text_ptr[num_str] = &(text->text[num_str]);
 
             if (text->text[num_str].str == NULL) 
             {
@@ -131,7 +135,7 @@ void WriteFileText(FILE* f, struct Text* text)
     int len = text->len;
     for (int i = 0; i < len; ++i)
     {
-        fprintf(f, "%s\n", text->text[i].str);
+        fprintf(f, "%s\n", text->text_ptr[i]->str);
     }    
 }
 
@@ -145,34 +149,21 @@ void WriteFileAll(const char* name_input_file, const char* name_output_file, str
 
     ReadFileText(input, name_input_file, text);
 
-    Qsort(text->text, sizeof(text->text[0]), 0, text->len, CompareStr);
-
+    Qsort(text->text_ptr, sizeof(text->text_ptr[0]), 0, text->len, CompareStr);
     WriteFileText(output, text);
+
     fclose(output);
     output = fopen(name_output_file, "a");
     fprintf(output, "\n-----------------------------------------------------------------------------\n\n");
 
-    Qsort(text->text, sizeof(text->text[0]), 0, text->len, CompareStrReverse);
-
+    Qsort(text->text_ptr, sizeof(text->text_ptr[0]), 0, text->len, CompareStrReverse);
     WriteFileText(output, text);
     fprintf(output, "\n-----------------------------------------------------------------------------\n\n");
 
-    int len = text->len;
-    for(int i = 0; i < len; ++i){
-        printf("%d ", text->text[i]);
-    }
-    printf("\n");
-
-    Qsort(text->text, sizeof(text->text[0]), 0, text->len, ComparePtr);
-
-    int len = text->len;
-    for(int i = 0; i < len; ++i){
-        printf("%d ", text->text[i]);
-    }
-    printf("\n");
-
+    Qsort(text->text_ptr, sizeof(text->text_ptr[0]), 0, text->len, ComparePtr);
     WriteFileText(output, text);
 
+    FreeText(text);
     fclose(input);
     fclose(output);
 }
