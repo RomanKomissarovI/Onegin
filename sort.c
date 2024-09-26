@@ -7,15 +7,15 @@
 #include "sort.h"
 #include "structs.h"
 
-void Qsort(void* a, size_t size_el, int l, int r, long long (*comp_func)(void *a, void *b))
+void Qsort(void* a, size_t size_el, int r, long long (*comp_func)(void *a, void *b))
 {
-    if (r - l <= 1)
+    if (r <= 1)
     {
         return;
     }
 
-    void* pivot = (char*) a + ((l + r) / 2) * size_el;
-    int l_ptr = l;
+    void* pivot = (char*) a + (r / 2) * size_el;
+    int l_ptr = 0;
     int r_ptr = r - 1;
 
     while (r_ptr >= l_ptr)
@@ -39,8 +39,8 @@ void Qsort(void* a, size_t size_el, int l, int r, long long (*comp_func)(void *a
         }
     }
     int g = (l_ptr - r_ptr == 1) ? l_ptr : l_ptr - 1;
-    Qsort(a, size_el, l, g, comp_func);
-    Qsort(a, size_el, g, r, comp_func);
+    Qsort(a, size_el, g, comp_func);
+    Qsort((char*) a + g * size_el, size_el, r - g, comp_func);
 }
 
 void Swap(void* to, void* from, size_t size_el)

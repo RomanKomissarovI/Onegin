@@ -56,7 +56,7 @@ int main(int argc, const char* argv[])
     FILE* f = fopen(input_file, "r");
     ReadFileText(f, input_file, &text);
 
-    Qsort(text.text_ptr, sizeof(text.text_ptr[0]), 0, text.len, com);
+    Qsort(text.text_ptr, sizeof(text.text_ptr[0]), text.len, com);
 
     FILE* write = fopen(output_file, "w");
     WriteFileText(write, &text);

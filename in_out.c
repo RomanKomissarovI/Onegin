@@ -9,6 +9,20 @@
 #include "sort.h"
 #include "compare.h"
 
+static char FileSize(const char* name_file, int* size)
+{
+    struct stat st;
+
+    if (stat(name_file, &st) == -1)
+    {
+        ColorPrint(RedColor, "Error file name\n");
+        return 1;
+    }
+
+    *size = st.st_size;
+    return 0;
+}
+
 static int ProcessStr(char* buffer, int real_size)
 {
     int num_str = 0;
@@ -31,15 +45,12 @@ void ReadFileText(FILE* f, const char* name_file, struct Text* text)
     assert(f != NULL);
     assert(text != NULL);
 
-    struct stat st;
-
-    if (stat(name_file, &st) == -1)
+    int size = 0;
+    if (FileSize(name_file, &size))
     {
         ColorPrint(RedColor, "Error file name\n");
         return;
     }
-
-    int size = st.st_size;
 
     char* buffer = (char*) calloc(size + 1, sizeof(char));
     int real_size = fread(buffer, sizeof(char), size, f);
@@ -149,18 +160,18 @@ void WriteFileAll(const char* name_input_file, const char* name_output_file, str
 
     ReadFileText(input, name_input_file, text);
 
-    Qsort(text->text_ptr, sizeof(text->text_ptr[0]), 0, text->len, CompareStr);
+    Qsort(text->text_ptr, sizeof(text->text_ptr[0]), text->len, CompareStr);
     WriteFileText(output, text);
 
     fclose(output);
     output = fopen(name_output_file, "a");
     fprintf(output, "\n-----------------------------------------------------------------------------\n\n");
 
-    Qsort(text->text_ptr, sizeof(text->text_ptr[0]), 0, text->len, CompareStrReverse);
+    Qsort(text->text_ptr, sizeof(text->text_ptr[0]), text->len, CompareStrReverse);
     WriteFileText(output, text);
     fprintf(output, "\n-----------------------------------------------------------------------------\n\n");
 
-    Qsort(text->text_ptr, sizeof(text->text_ptr[0]), 0, text->len, ComparePtr);
+    Qsort(text->text_ptr, sizeof(text->text_ptr[0]), text->len, ComparePtr);
     WriteFileText(output, text);
 
     FreeText(text);

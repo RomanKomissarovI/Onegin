@@ -4,7 +4,7 @@
 #include "structs.h"
 #include <stdio.h>
 
-void Qsort(void* a, size_t size_el, int l, int r, long long (*comp_func)(void *a, void *b));
+void Qsort(void* a, size_t size_el, int r, long long (*comp_func)(void *a, void *b));
 
 void Swap(void* to, void* from, size_t size_el);
 
